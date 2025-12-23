@@ -1,0 +1,298 @@
+const express = require('express');
+const cors = require('cors');
+const axios = require('axios');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.static('public'));
+
+// Dados mock do artista em memória
+const artistData = {
+  id: '1',
+  name: 'Alex Rivera',
+  genre: 'Electronic Pop',
+  followers: 125000,
+  monthlyListeners: 850000,
+  bio: 'Artista independente de Electronic Pop que mistura sintetizadores atmosféricos com vocais emotivos. Sua música transporta os ouvintes para paisagens sonoras únicas.',
+  image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
+  topTracks: [
+    {
+      id: '1',
+      name: 'Midnight Dreams',
+      duration: '3:45',
+      plays: 2450000,
+      album: 'Neon Nights',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+    },
+    {
+      id: '2',
+      name: 'Electric Pulse',
+      duration: '4:12',
+      plays: 1890000,
+      album: 'Neon Nights',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+    },
+    {
+      id: '3',
+      name: 'City Lights',
+      duration: '3:28',
+      plays: 1670000,
+      album: 'Urban Vibes',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+    },
+    {
+      id: '4',
+      name: 'Stellar Wave',
+      duration: '4:05',
+      plays: 1520000,
+      album: 'Neon Nights',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
+    },
+    {
+      id: '5',
+      name: 'Digital Sunset',
+      duration: '3:55',
+      plays: 1380000,
+      album: 'Urban Vibes',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'
+    }
+  ],
+  albums: [
+    {
+      id: '1',
+      name: 'Neon Nights',
+      year: 2024,
+      tracks: 12,
+      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600',
+      color: '#FF6B9D'
+    },
+    {
+      id: '2',
+      name: 'Urban Vibes',
+      year: 2023,
+      tracks: 10,
+      image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600',
+      color: '#4ECDC4'
+    }
+  ],
+  upcomingShows: [
+    {
+      id: '1',
+      venue: 'Electric Hall',
+      city: 'São Paulo, SP',
+      date: '2024-12-15',
+      time: '21:00',
+      tickets: 'https://ticketmaster.com/event1'
+    },
+    {
+      id: '2',
+      venue: 'Neon Club',
+      city: 'Rio de Janeiro, RJ',
+      date: '2024-12-22',
+      time: '22:00',
+      tickets: 'https://ticketmaster.com/event2'
+    },
+    {
+      id: '3',
+      venue: 'Skyline Arena',
+      city: 'Belo Horizonte, MG',
+      date: '2025-01-10',
+      time: '20:30',
+      tickets: 'https://ticketmaster.com/event3'
+    }
+  ],
+  social: {
+    spotify: 'https://open.spotify.com/artist/alexrivera',
+    instagram: 'https://instagram.com/alexrivera',
+    twitter: 'https://twitter.com/alexrivera',
+    youtube: 'https://youtube.com/@alexrivera'
+  }
+};
+
+// Endpoint para obter dados do artista
+app.get('/api/artist', (req, res) => {
+  res.json(artistData);
+});
+
+// Endpoint para obter clima baseado na localização
+app.get('/api/weather', async (req, res) => {
+  try {
+    const { lat, lon } = req.query;
+    
+    if (!lat || !lon) {
+      // Retorna dados mock se não houver coordenadas
+      const hour = new Date().getHours();
+      const isDay = hour >= 6 && hour < 18;
+      return res.json({
+        temperature: 22,
+        condition: isDay ? 'sunny' : 'clear',
+        description: isDay ? 'Ensolarado' : 'Céu limpo',
+        humidity: 65,
+        icon: isDay ? '☀️' : '🌙',
+        mood: 'vibrant',
+        timeOfDay: isDay ? 'day' : 'night'
+      });
+    }
+
+    // Usando API OpenWeatherMap (requer API key)
+    // Para demo, vamos usar dados simulados baseados na localização
+    const mockWeather = getMockWeather(lat, lon);
+    res.json(mockWeather);
+  } catch (error) {
+    console.error('Weather API error:', error);
+    const hour = new Date().getHours();
+    const isDay = hour >= 6 && hour < 18;
+    res.json({
+      temperature: 20,
+      condition: isDay ? 'sunny' : 'clear',
+      description: isDay ? 'Ensolarado' : 'Céu limpo',
+      humidity: 60,
+      icon: isDay ? '☀️' : '🌙',
+      mood: 'vibrant',
+      timeOfDay: isDay ? 'day' : 'night'
+    });
+  }
+});
+
+// Função para simular dados de clima baseado na localização
+function getMockWeather(lat, lon) {
+  // Simula diferentes condições baseadas na latitude, longitude e hora
+  const latitude = parseFloat(lat);
+  const longitude = parseFloat(lon);
+  const hour = new Date().getHours();
+  const month = new Date().getMonth(); // 0-11
+  
+  let condition, description, icon, mood;
+  
+  // Determina a estação baseada no mês (hemisfério norte/sul)
+  const isNorthernHemisphere = latitude > 0;
+  let season; // 0=inverno, 1=primavera, 2=verão, 3=outono
+  if (isNorthernHemisphere) {
+    if (month >= 2 && month <= 4) season = 1; // Primavera
+    else if (month >= 5 && month <= 7) season = 2; // Verão
+    else if (month >= 8 && month <= 10) season = 3; // Outono
+    else season = 0; // Inverno
+  } else {
+    // Hemisfério sul (estações invertidas)
+    if (month >= 8 && month <= 10) season = 1; // Primavera
+    else if (month >= 11 || month <= 1) season = 2; // Verão
+    else if (month >= 2 && month <= 4) season = 3; // Outono
+    else season = 0; // Inverno
+  }
+  
+  // Determina se é dia ou noite (6h - 18h = dia, resto = noite)
+  const isDay = hour >= 6 && hour < 18;
+  const timeOfDay = isDay ? 'day' : 'night';
+  
+  // Gera número aleatório para variação (0-1)
+  const random = Math.random();
+  
+  if (latitude > 0 && latitude < 30) {
+    // Regiões tropicais/quentes
+    if (random > 0.8 && season === 2) {
+      condition = 'rainy';
+      description = 'Chuvoso';
+      icon = '🌧️';
+      mood = 'vibrant'; // Mantém vibrant mesmo com chuva (tropical)
+    } else if (isDay) {
+      condition = 'sunny';
+      description = 'Ensolarado';
+      icon = '☀️';
+      mood = 'vibrant';
+    } else {
+      condition = 'clear';
+      description = 'Céu limpo';
+      icon = '🌙';
+      mood = 'vibrant';
+    }
+  } else if (latitude >= 30 && latitude < 60) {
+    // Regiões temperadas
+    if (random > 0.75 && season === 0) {
+      condition = 'snowy';
+      description = 'Neve';
+      icon = '❄️';
+      mood = 'calm';
+    } else if (random > 0.7) {
+      condition = 'rainy';
+      description = 'Chuvoso';
+      icon = '🌧️';
+      mood = 'balanced';
+    } else if (isDay) {
+      condition = 'partly-cloudy';
+      description = 'Parcialmente nublado';
+      icon = '⛅';
+      mood = 'balanced';
+    } else {
+      condition = 'clear';
+      description = 'Céu limpo';
+      icon = '🌙';
+      mood = 'balanced';
+    }
+  } else {
+    // Regiões mais frias (polares/temperadas frias)
+    if (random > 0.6 && season === 0) {
+      condition = 'snowy';
+      description = 'Neve';
+      icon = '❄️';
+      mood = 'calm';
+    } else {
+      condition = 'cloudy';
+      description = isDay ? 'Nublado' : 'Noite nublada';
+      icon = isDay ? '☁️' : '🌑';
+      mood = 'calm';
+    }
+  }
+  
+  // Cálculo de temperatura mais realista
+  let baseTemp = 20;
+  if (latitude > 0 && latitude < 30) {
+    baseTemp = 28; // Tropical
+  } else if (latitude >= 30 && latitude < 60) {
+    baseTemp = 15; // Temperado
+  } else {
+    baseTemp = 5; // Frio
+  }
+  
+  // Ajuste sazonal
+  const seasonAdjustment = (season === 2 ? 8 : season === 0 ? -8 : 0);
+  const hourAdjustment = Math.sin(hour * Math.PI / 12) * 5;
+  const temperature = baseTemp + seasonAdjustment + hourAdjustment;
+  
+  return {
+    temperature: Math.round(temperature),
+    condition,
+    description,
+    humidity: 50 + Math.random() * 30,
+    icon,
+    mood,
+    timeOfDay // 'day' ou 'night'
+  };
+}
+
+// Endpoint para atualizar estatísticas (simulação)
+app.post('/api/stats', (req, res) => {
+  // Simula incremento de plays
+  const trackId = req.body.trackId;
+  if (trackId) {
+    const track = artistData.topTracks.find(t => t.id === trackId);
+    if (track) {
+      track.plays += Math.floor(Math.random() * 100);
+    }
+  }
+  res.json({ success: true, data: artistData });
+});
+
+// Export para Vercel
+module.exports = app;
+
+// Listen apenas se não estiver no Vercel
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🎵 Servidor rodando em http://localhost:${PORT}`);
+  });
+}

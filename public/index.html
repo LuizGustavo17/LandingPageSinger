@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Rivera - Official Landing Page</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+    </button>
+
+    <!-- Weather Info -->
+    <div class="weather-info" id="weatherInfo">
+        <span class="weather-icon" id="weatherIcon">☀️</span>
+        <span class="weather-temp" id="weatherTemp">--°</span>
+        <span class="weather-desc" id="weatherDesc">Carregando...</span>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-background"></div>
+        <div class="particles" id="particles"></div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <div class="artist-image-container">
+                    <div class="artist-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800" alt="Alex Rivera" class="artist-image" id="artistImage">
+                        <div class="image-glow"></div>
+                    </div>
+                </div>
+                
+                <h1 class="hero-title">
+                    <span class="title-line">ALEX</span>
+                    <span class="title-line">RIVERA</span>
+                </h1>
+                
+                <p class="hero-genre" id="heroGenre">Electronic Pop</p>
+                <p class="hero-bio" id="heroBio">Artista independente de Electronic Pop que mistura sintetizadores atmosféricos com vocais emotivos.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="followers">125K</span>
+                        <span class="stat-label">Seguidores</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="listeners">850K</span>
+                        <span class="stat-label">Ouvintes Mensais</span>
+                    </div>
+                </div>
+                
+                <div class="hero-actions">
+                    <a href="#" class="btn btn-primary" id="spotifyBtn">
+                        <span>▶</span> Ouvir no Spotify
+                    </a>
+                    <a href="#albums" class="btn btn-secondary">Ver Álbuns</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <div class="arrow">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Tracks Section -->
+    <section class="section tracks-section" id="tracks">
+        <div class="container">
+            <h2 class="section-title">Top Músicas</h2>
+            <div class="tracks-grid" id="tracksGrid">
+                <!-- Tracks will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Albums Section -->
+    <section class="section albums-section" id="albums">
+        <div class="container">
+            <h2 class="section-title">Álbuns</h2>
+            <div class="albums-grid" id="albumsGrid">
+                <!-- Albums will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Shows Section -->
+    <section class="section shows-section" id="shows">
+        <div class="container">
+            <h2 class="section-title">Próximos Shows</h2>
+            <div class="shows-list" id="showsList">
+                <!-- Shows will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links" id="socialLinks">
+                <!-- Social links will be loaded here -->
+            </div>
+            <p class="footer-text">© 2024 Alex Rivera. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audioPlayer">
+        <div class="player-content">
+            <div class="player-info">
+                <div class="player-track-art" id="playerArt"></div>
+                <div class="player-track-info">
+                    <div class="player-track-name" id="playerTrackName">Selecione uma música</div>
+                    <div class="player-track-artist" id="playerArtist">Alex Rivera</div>
+                </div>
+            </div>
+            <div class="player-controls">
+                <button class="player-btn prev-btn" id="prevBtn">⏮</button>
+                <button class="player-btn play-btn" id="playBtn">▶</button>
+                <button class="player-btn next-btn" id="nextBtn">⏭</button>
+            </div>
+            <div class="player-progress">
+                <input type="range" class="progress-bar" id="progressBar" min="0" max="100" value="0">
+                <div class="time-info">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+            <button class="player-close" id="closePlayer">✕</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
