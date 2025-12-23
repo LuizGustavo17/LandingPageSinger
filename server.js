@@ -11,7 +11,13 @@ app.use(cors());
 app.use(express.json());
 
 // Servir arquivos estáticos (deve vir antes das rotas)
-app.use(express.static(path.join(__dirname, 'public')));
+// No Vercel, __dirname aponta para a raiz do projeto
+const publicPath = path.join(__dirname, 'public');
+app.use(express.static(publicPath, {
+  maxAge: '1y',
+  etag: true,
+  lastModified: true
+}));
 
 // Dados mock do artista em memória
 const artistData = {
@@ -115,6 +121,25 @@ const artistData = {
     youtube: 'https://youtube.com/@alexrivera'
   }
 };
+
+// Rotas explícitas para arquivos estáticos (backup caso express.static não funcione no Vercel)
+app.get('/css/:file', (req, res) => {
+  const filePath = path.join(__dirname, 'public', 'css', req.params.file);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      res.status(404).send('File not found');
+    }
+  });
+});
+
+app.get('/js/:file', (req, res) => {
+  const filePath = path.join(__dirname, 'public', 'js', req.params.file);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      res.status(404).send('File not found');
+    }
+  });
+});
 
 // Endpoint para obter dados do artista
 app.get('/api/artist', (req, res) => {
@@ -289,19 +314,12 @@ app.post('/api/stats', (req, res) => {
   res.json({ success: true, data: artistData });
 });
 
-// Rota catch-all: serve index.html para todas as rotas que não são APIs ou arquivos estáticos
-app.get('*', (req, res, next) => {
+// Rota catch-all: serve index.html para todas as rotas que não são APIs
+// O express.static já serviu os arquivos estáticos se existirem
+app.get('*', (req, res) => {
   // Ignora requisições para API
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ error: 'API endpoint not found' });
-  }
-  
-  // Ignora arquivos estáticos (CSS, JS, imagens, etc)
-  const staticExtensions = ['.css', '.js', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'];
-  const hasStaticExtension = staticExtensions.some(ext => req.path.toLowerCase().endsWith(ext));
-  
-  if (hasStaticExtension) {
-    return next(); // Deixa o express.static tratar
   }
   
   // Serve index.html para todas as outras rotas (SPA)
