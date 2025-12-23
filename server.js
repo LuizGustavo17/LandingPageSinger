@@ -287,6 +287,17 @@ app.post('/api/stats', (req, res) => {
   res.json({ success: true, data: artistData });
 });
 
+// Rota catch-all: serve index.html para todas as rotas que não são APIs
+app.get('*', (req, res) => {
+  // Ignora requisições para API
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ error: 'API endpoint not found' });
+  }
+  // Serve index.html para todas as outras rotas (SPA)
+  const indexPath = path.resolve(__dirname, 'public', 'index.html');
+  res.sendFile(indexPath);
+});
+
 // Export para Vercel
 module.exports = app;
 
