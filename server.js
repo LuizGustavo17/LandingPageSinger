@@ -9,7 +9,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+
+// Servir arquivos estáticos (deve vir antes das rotas)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Dados mock do artista em memória
 const artistData = {
@@ -287,12 +289,21 @@ app.post('/api/stats', (req, res) => {
   res.json({ success: true, data: artistData });
 });
 
-// Rota catch-all: serve index.html para todas as rotas que não são APIs
-app.get('*', (req, res) => {
+// Rota catch-all: serve index.html para todas as rotas que não são APIs ou arquivos estáticos
+app.get('*', (req, res, next) => {
   // Ignora requisições para API
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ error: 'API endpoint not found' });
   }
+  
+  // Ignora arquivos estáticos (CSS, JS, imagens, etc)
+  const staticExtensions = ['.css', '.js', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'];
+  const hasStaticExtension = staticExtensions.some(ext => req.path.toLowerCase().endsWith(ext));
+  
+  if (hasStaticExtension) {
+    return next(); // Deixa o express.static tratar
+  }
+  
   // Serve index.html para todas as outras rotas (SPA)
   const indexPath = path.resolve(__dirname, 'public', 'index.html');
   res.sendFile(indexPath);
