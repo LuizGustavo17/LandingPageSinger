@@ -324,9 +324,17 @@ function playTrack(index, event) {
         playNext();
     });
     
+    audio.addEventListener('error', (error) => {
+        console.error('Error loading audio:', error);
+        // Se houver erro ao carregar, tenta redirecionar para o Spotify
+        alert('Erro ao carregar o áudio. Redirecionando para o Spotify...');
+        window.open(artistData.social.spotify, '_blank');
+    });
+    
     audio.play().catch(error => {
         console.error('Error playing audio:', error);
-        // Se houver erro, redireciona para o Spotify
+        // Se houver erro ao tocar, redireciona para o Spotify
+        alert('Erro ao reproduzir o áudio. Redirecionando para o Spotify...');
         window.open(artistData.social.spotify, '_blank');
     });
     
