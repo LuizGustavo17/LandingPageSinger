@@ -35,7 +35,8 @@ const artistData = {
       duration: '3:45',
       plays: 2450000,
       album: 'Neon Nights',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+      personality: { energy: 3, mood: 4, vibe: 5, time: 4 } // Calmo, noturno, introspectivo
     },
     {
       id: '2',
@@ -43,7 +44,8 @@ const artistData = {
       duration: '4:12',
       plays: 1890000,
       album: 'Neon Nights',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+      personality: { energy: 5, mood: 5, vibe: 5, time: 5 } // Energético, festivo, dançante
     },
     {
       id: '3',
@@ -51,7 +53,8 @@ const artistData = {
       duration: '3:28',
       plays: 1670000,
       album: 'Urban Vibes',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+      personality: { energy: 4, mood: 3, vibe: 4, time: 3 } // Urbano, moderno, equilibrado
     },
     {
       id: '4',
@@ -59,7 +62,8 @@ const artistData = {
       duration: '4:05',
       plays: 1520000,
       album: 'Neon Nights',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+      personality: { energy: 2, mood: 2, vibe: 2, time: 2 } // Tranquilo, meditativo, relaxante
     },
     {
       id: '5',
@@ -67,7 +71,53 @@ const artistData = {
       duration: '3:55',
       plays: 1380000,
       album: 'Urban Vibes',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
+      personality: { energy: 3, mood: 4, vibe: 3, time: 4 } // Nostálgico, contemplativo
+    },
+    {
+      id: '6',
+      name: 'Neon Heartbeat',
+      duration: '4:20',
+      plays: 1200000,
+      album: 'Neon Nights',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+      personality: { energy: 5, mood: 5, vibe: 5, time: 5 } // Super energético, festa
+    },
+    {
+      id: '7',
+      name: 'Silent Echoes',
+      duration: '3:15',
+      plays: 1100000,
+      album: 'Urban Vibes',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3',
+      personality: { energy: 1, mood: 1, vibe: 1, time: 1 } // Muito calmo, melancólico
+    },
+    {
+      id: '8',
+      name: 'Dance Floor Anthem',
+      duration: '4:30',
+      plays: 980000,
+      album: 'Neon Nights',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
+      personality: { energy: 5, mood: 5, vibe: 5, time: 4 } // Festa, dança, alegre
+    },
+    {
+      id: '9',
+      name: 'Morning Breeze',
+      duration: '3:40',
+      plays: 950000,
+      album: 'Urban Vibes',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3',
+      personality: { energy: 2, mood: 3, vibe: 2, time: 2 } // Fresco, leve, matinal
+    },
+    {
+      id: '10',
+      name: 'Cosmic Journey',
+      duration: '5:10',
+      plays: 920000,
+      album: 'Neon Nights',
+      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3',
+      personality: { energy: 3, mood: 3, vibe: 4, time: 3 } // Espacial, atmosférico, equilibrado
     }
   ],
   albums: [
@@ -313,6 +363,64 @@ app.post('/api/stats', (req, res) => {
   }
   res.json({ success: true, data: artistData });
 });
+
+// Endpoint para calcular música recomendada baseada no quiz
+app.post('/api/quiz/result', (req, res) => {
+  const answers = req.body.answers; // Array de respostas [1-5 para cada pergunta]
+  
+  if (!answers || answers.length < 4) {
+    return res.status(400).json({ error: 'Respostas incompletas' });
+  }
+  
+  // Calcula perfil do usuário baseado nas respostas
+  // answers[0] = energia (1-5)
+  // answers[1] = humor (1-5)
+  // answers[2] = vibe (1-5)
+  // answers[3] = momento do dia (1-5)
+  
+  const userProfile = {
+    energy: answers[0],
+    mood: answers[1],
+    vibe: answers[2],
+    time: answers[3]
+  };
+  
+  // Calcula similaridade com cada música
+  let bestMatch = null;
+  let bestScore = -1;
+  
+  artistData.topTracks.forEach(track => {
+    if (!track.personality) return;
+    
+    const score = calculateMatchScore(userProfile, track.personality);
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = track;
+    }
+  });
+  
+  res.json({
+    success: true,
+    recommendedTrack: bestMatch,
+    matchScore: Math.round((bestScore / 4) * 100), // Percentual de match
+    userProfile: userProfile
+  });
+});
+
+function calculateMatchScore(userProfile, trackPersonality) {
+  // Calcula a diferença absoluta (quanto menor, melhor o match)
+  const energyDiff = Math.abs(userProfile.energy - trackPersonality.energy);
+  const moodDiff = Math.abs(userProfile.mood - trackPersonality.mood);
+  const vibeDiff = Math.abs(userProfile.vibe - trackPersonality.vibe);
+  const timeDiff = Math.abs(userProfile.time - trackPersonality.time);
+  
+  // Score inverso: quanto menor a diferença, maior o score
+  const totalDiff = energyDiff + moodDiff + vibeDiff + timeDiff;
+  const maxDiff = 4 * 4; // Máxima diferença possível (4 perguntas * 4 de diferença máxima)
+  const score = maxDiff - totalDiff;
+  
+  return score;
+}
 
 // Rota catch-all: serve index.html para todas as rotas que não são APIs
 // O express.static já serviu os arquivos estáticos se existirem
