@@ -229,7 +229,7 @@ function renderAlbums() {
     if (!artistData || !albumsGrid) return;
     
     albumsGrid.innerHTML = artistData.albums.map(album => `
-        <div class="album-card">
+        <div class="album-card" onclick="window.open('${artistData.social.spotify}', '_blank')">
             <img src="${album.image}" alt="${album.name}" class="album-art">
             <div class="album-info">
                 <div class="album-name">${album.name}</div>
@@ -254,7 +254,7 @@ function renderShows() {
             </div>
             <div class="show-actions">
                 <span class="show-time">${show.time}</span>
-                <a href="${show.tickets}" class="btn-ticket" target="_blank">Ingressos</a>
+                <a href="${artistData.social.spotify}" class="btn-ticket" target="_blank">Ver no Spotify</a>
             </div>
         </div>
     `).join('');
@@ -296,6 +296,12 @@ function playTrack(index, event) {
     currentTrackIndex = index;
     currentTrack = artistData.topTracks[index];
     
+    // Se não houver preview, redireciona para o Spotify
+    if (!currentTrack.preview) {
+        window.open(artistData.social.spotify, '_blank');
+        return;
+    }
+    
     // Stop current audio if playing
     if (audio) {
         audio.pause();
@@ -320,7 +326,8 @@ function playTrack(index, event) {
     
     audio.play().catch(error => {
         console.error('Error playing audio:', error);
-        alert('Erro ao reproduzir a música. Verifique se o arquivo de áudio está disponível.');
+        // Se houver erro, redireciona para o Spotify
+        window.open(artistData.social.spotify, '_blank');
     });
     
     // Update plays count

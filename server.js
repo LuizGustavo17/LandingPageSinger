@@ -35,7 +35,7 @@ const artistData = {
       duration: '3:45',
       plays: 2450000,
       album: 'Neon Nights',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 3, mood: 4, vibe: 5, time: 4 } // Calmo, noturno, introspectivo
     },
     {
@@ -44,7 +44,7 @@ const artistData = {
       duration: '4:12',
       plays: 1890000,
       album: 'Neon Nights',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 5, mood: 5, vibe: 5, time: 5 } // Energético, festivo, dançante
     },
     {
@@ -53,7 +53,7 @@ const artistData = {
       duration: '3:28',
       plays: 1670000,
       album: 'Urban Vibes',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 4, mood: 3, vibe: 4, time: 3 } // Urbano, moderno, equilibrado
     },
     {
@@ -62,7 +62,7 @@ const artistData = {
       duration: '4:05',
       plays: 1520000,
       album: 'Neon Nights',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 2, mood: 2, vibe: 2, time: 2 } // Tranquilo, meditativo, relaxante
     },
     {
@@ -71,7 +71,7 @@ const artistData = {
       duration: '3:55',
       plays: 1380000,
       album: 'Urban Vibes',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 3, mood: 4, vibe: 3, time: 4 } // Nostálgico, contemplativo
     },
     {
@@ -80,7 +80,7 @@ const artistData = {
       duration: '4:20',
       plays: 1200000,
       album: 'Neon Nights',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 5, mood: 5, vibe: 5, time: 5 } // Super energético, festa
     },
     {
@@ -89,7 +89,7 @@ const artistData = {
       duration: '3:15',
       plays: 1100000,
       album: 'Urban Vibes',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 1, mood: 1, vibe: 1, time: 1 } // Muito calmo, melancólico
     },
     {
@@ -98,7 +98,7 @@ const artistData = {
       duration: '4:30',
       plays: 980000,
       album: 'Neon Nights',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 5, mood: 5, vibe: 5, time: 4 } // Festa, dança, alegre
     },
     {
@@ -107,7 +107,7 @@ const artistData = {
       duration: '3:40',
       plays: 950000,
       album: 'Urban Vibes',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 2, mood: 3, vibe: 2, time: 2 } // Fresco, leve, matinal
     },
     {
@@ -116,7 +116,7 @@ const artistData = {
       duration: '5:10',
       plays: 920000,
       album: 'Neon Nights',
-      preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3',
+      preview: null, // Demonstração - sem áudio para evitar problemas de direitos autorais
       personality: { energy: 3, mood: 3, vibe: 4, time: 3 } // Espacial, atmosférico, equilibrado
     }
   ],

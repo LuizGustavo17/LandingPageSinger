@@ -22,55 +22,6 @@
         <span class="weather-desc" id="weatherDesc">Carregando...</span>
     </div>
 
-    <!-- Quiz Section -->
-    <section class="quiz-section" id="quizSection">
-        <div class="quiz-container">
-            <div class="quiz-intro" id="quizIntro">
-                <div class="quiz-intro-content">
-                    <h2 class="quiz-title">🎵 Descubra Sua Música</h2>
-                    <p class="quiz-subtitle">Responda algumas perguntas e descubra qual música do Alex Rivera combina mais com você!</p>
-                    <button class="btn btn-primary quiz-start-btn" id="quizStartBtn">Começar Quiz</button>
-                </div>
-            </div>
-
-            <div class="quiz-wrapper" id="quizWrapper" style="display: none;">
-                <div class="quiz-progress">
-                    <div class="progress-bar-fill" id="quizProgress"></div>
-                    <span class="progress-text" id="progressText">Pergunta 1 de 4</span>
-                </div>
-
-                <div class="quiz-question" id="quizQuestion">
-                    <h3 class="question-title" id="questionTitle"></h3>
-                    <div class="question-options" id="questionOptions"></div>
-                    <button class="btn btn-primary quiz-next-btn" id="quizNextBtn" disabled>Próxima Pergunta</button>
-                </div>
-            </div>
-
-            <div class="quiz-result" id="quizResult" style="display: none;">
-                <div class="result-content">
-                    <div class="result-icon">🎉</div>
-                    <h2 class="result-title">Sua Música Ideal!</h2>
-                    <div class="result-match">
-                        <span class="match-percentage" id="matchPercentage">0%</span>
-                        <span class="match-label">de compatibilidade</span>
-                    </div>
-                    <div class="result-track-card">
-                        <div class="result-track-art" id="resultTrackArt"></div>
-                        <div class="result-track-info">
-                            <div class="result-track-name" id="resultTrackName"></div>
-                            <div class="result-track-album" id="resultTrackAlbum"></div>
-                            <div class="result-track-duration" id="resultTrackDuration"></div>
-                        </div>
-                    </div>
-                    <div class="result-actions">
-                        <button class="btn btn-primary" id="playRecommendedBtn">▶ Ouvir Agora</button>
-                        <button class="btn btn-secondary" id="restartQuizBtn">Fazer Quiz Novamente</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-background"></div>
@@ -154,6 +105,55 @@
             <h2 class="section-title">Próximos Shows</h2>
             <div class="shows-list" id="showsList">
                 <!-- Shows will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section class="quiz-section" id="quizSection">
+        <div class="quiz-container">
+            <div class="quiz-intro" id="quizIntro">
+                <div class="quiz-intro-content">
+                    <h2 class="quiz-title">🎵 Descubra Sua Música</h2>
+                    <p class="quiz-subtitle">Responda algumas perguntas e descubra qual música do Alex Rivera combina mais com você!</p>
+                    <button class="btn btn-primary quiz-start-btn" id="quizStartBtn">Começar Quiz</button>
+                </div>
+            </div>
+
+            <div class="quiz-wrapper" id="quizWrapper" style="display: none;">
+                <div class="quiz-progress">
+                    <div class="progress-bar-fill" id="quizProgress"></div>
+                    <span class="progress-text" id="progressText">Pergunta 1 de 4</span>
+                </div>
+
+                <div class="quiz-question" id="quizQuestion">
+                    <h3 class="question-title" id="questionTitle"></h3>
+                    <div class="question-options" id="questionOptions"></div>
+                    <button class="btn btn-primary quiz-next-btn" id="quizNextBtn" disabled>Próxima Pergunta</button>
+                </div>
+            </div>
+
+            <div class="quiz-result" id="quizResult" style="display: none;">
+                <div class="result-content">
+                    <div class="result-icon">🎉</div>
+                    <h2 class="result-title">Sua Música Ideal!</h2>
+                    <div class="result-match">
+                        <span class="match-percentage" id="matchPercentage">0%</span>
+                        <span class="match-label">de compatibilidade</span>
+                    </div>
+                    <div class="result-track-card">
+                        <div class="result-track-art" id="resultTrackArt"></div>
+                        <div class="result-track-info">
+                            <div class="result-track-name" id="resultTrackName"></div>
+                            <div class="result-track-album" id="resultTrackAlbum"></div>
+                            <div class="result-track-duration" id="resultTrackDuration"></div>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <a href="https://open.spotify.com/artist/alexrivera" target="_blank" class="btn btn-primary" id="playRecommendedBtn">▶ Ouvir no Spotify</a>
+                        <button class="btn btn-secondary" id="restartQuizBtn">Fazer Quiz Novamente</button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

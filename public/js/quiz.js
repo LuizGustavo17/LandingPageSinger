@@ -75,11 +75,7 @@ function initializeQuiz() {
         quizNextBtn.addEventListener('click', nextQuestion);
     }
     
-    // Play recommended track button
-    const playRecommendedBtn = document.getElementById('playRecommendedBtn');
-    if (playRecommendedBtn) {
-        playRecommendedBtn.addEventListener('click', playRecommendedTrack);
-    }
+    // Botão de "Ouvir no Spotify" já está como link no HTML, não precisa de handler
 }
 
 function startQuiz() {
@@ -224,47 +220,6 @@ function showResult(data) {
     quizResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function playRecommendedTrack() {
-    if (!window.recommendedTrack) return;
-    
-    // Get artistData from global scope
-    const currentArtistData = typeof artistData !== 'undefined' ? artistData : (window.artistData || null);
-    
-    if (!currentArtistData || !currentArtistData.topTracks) {
-        // Try to fetch artist data
-        fetch('/api/artist')
-            .then(res => res.json())
-            .then(data => {
-                playTrackFromData(data, window.recommendedTrack);
-            })
-            .catch(err => {
-                console.error('Error fetching artist data:', err);
-                alert('Erro ao carregar a música. Tente novamente.');
-            });
-        return;
-    }
-    
-    playTrackFromData(currentArtistData, window.recommendedTrack);
-}
-
-function playTrackFromData(artistData, recommendedTrack) {
-    // Find track index in artistData
-    const trackIndex = artistData.topTracks.findIndex(t => t.id === recommendedTrack.id);
-    if (trackIndex !== -1) {
-        // Use existing playTrack function
-        if (typeof playTrack === 'function') {
-            playTrack(trackIndex);
-        }
-    }
-    
-    // Scroll to tracks section
-    setTimeout(() => {
-        const tracksSection = document.getElementById('tracks');
-        if (tracksSection) {
-            tracksSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, 500);
-}
 
 function resetQuiz() {
     quizState = {
