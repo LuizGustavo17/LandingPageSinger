@@ -1,6 +1,6 @@
 # 🎵 Landing Page - Artista Spotify
 
-Landing page responsiva com dark mode para artista do Spotify, com integração de clima e animações dinâmicas.
+A fictional landing page with dark mode, where the interface changes according to the local time.
 
 ## ✨ Características
 
